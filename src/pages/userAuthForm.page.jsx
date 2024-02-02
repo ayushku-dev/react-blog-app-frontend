@@ -7,14 +7,14 @@ import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
 import { storeInSession } from "../common/session";
 import { UserContext } from "../App";
+import { authWithGoogle } from "../common/firebase";
 
 const UserAuthForm = ({ type }) => {
 
     const authApi = "api/auth";
 
-    let { userAuth : { token }, setUserAuth } = useContext(UserContext);
 
-    console.log(token);
+    let { userAuth : { token }, setUserAuth } = useContext(UserContext);
 
     const userAuthThroughServer = (serverRoute, formData) => {
         axios.post(import.meta.env.VITE_SERVER_DOMAIN + authApi + serverRoute, formData)
@@ -73,6 +73,23 @@ const UserAuthForm = ({ type }) => {
 
     }
 
+    const handleGoogleAuth = (e) => {
+        e.preventDefault();
+        authWithGoogle()
+            .then(user => {
+                console.log(user);
+                let serverRoute = "/google-auth"
+                let formData = {
+                    googleAccessToken : user.accessToken
+                }
+                userAuthThroughServer(serverRoute, formData);
+            })
+            .catch(err => {
+                toast.error('Trouble logging via Google');
+                return console.log(err);
+            })
+    }
+
     return (
         token ? 
         <Navigate to="/" />
@@ -120,7 +137,7 @@ const UserAuthForm = ({ type }) => {
                         <hr className="w-1/2 border-black" />
                     </div>
 
-                    <button className="btn-dark flex items-center justify-center gap-4 w-[90%] center md:w-[50%]">
+                    <button className="btn-dark flex items-center justify-center gap-4 w-[90%] center md:w-[50%]" onClick={handleGoogleAuth}>
                         <img src={googleIcon} alt="Google logo" className="w-5" />
                         Continue with Google
                     </button>

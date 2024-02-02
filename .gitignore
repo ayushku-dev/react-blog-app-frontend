@@ -8,3 +8,4 @@ dist/
 .DS_Store
 src/regex.txt
 src/common/firebase.jsx
+.env
