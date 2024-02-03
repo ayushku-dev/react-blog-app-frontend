@@ -9,13 +9,13 @@ const UserNavigationPanel = () => {
     const { userAuth: { username }, setUserAuth } = useContext(UserContext);
     const signOutUser = () => {
         removeFromSession("user");
-        setUserAuth({ token: null})
+        setUserAuth({ token: null })
     }
 
     return (
         <AnimationWrapper
             className="absolute right-0 z-50"
-            transition={{ duration: 0.2 }}>  
+            transition={{ duration: 0.2 }}>
             <div className="bg-white absolute right-0 border border-grey w-60 duration-200">
                 <Link to="/editor" className="flex gap-2 link md:hidden pl-8 py-4">
                     <i className="fi fi-rr-file-edit"></i>
@@ -37,7 +37,7 @@ const UserNavigationPanel = () => {
                 <span className="absolute border-t border-grey w-[100%]"></span>
 
                 <button className="text-left p4 hover:bg-grey w-full pl-8 py-4"
-                    onClick={signOutUser}>
+                    onClick={signOutUser} onTouchStart={signOutUser}>
                     <h1 className="font-bold text-xl mg-1">Sign Out</h1>
                     <p className="text-dark-grey">@{username}</p>
                 </button>
